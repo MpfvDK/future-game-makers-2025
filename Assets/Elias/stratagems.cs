@@ -6,6 +6,8 @@ using TMPro;
 
 public class stratagems : MonoBehaviour
 {
+    public List<StratagemSO> stratagemList = new List<StratagemSO>();
+    
     public TextMeshProUGUI castingText;
     public KeyCode activationKey = KeyCode.LeftControl;
     public KeyCode strataKey1 = KeyCode.Mouse0;
@@ -15,6 +17,13 @@ public class stratagems : MonoBehaviour
     
     void Update()
     {
+        if (CheckIfCasted())
+        {
+            entering = false;
+            currentCode = "";
+            castingText.color = new Color(1, 1, 1, 0);
+        }
+        
         if (Input.GetKeyDown(activationKey))
         {
             entering = true;
@@ -38,5 +47,14 @@ public class stratagems : MonoBehaviour
         }
 
         castingText.text = "Currently casting\n   |     " + currentCode;
+    }
+
+    private bool CheckIfCasted()
+    {
+        foreach (StratagemSO sg in stratagemList)
+        {
+            if (currentCode.Equals(sg.castCode)) return true;
+        }
+        return false;
     }
 }
