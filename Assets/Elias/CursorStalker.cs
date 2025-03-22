@@ -11,9 +11,12 @@ public class CursorStalker : MonoBehaviour
         transform.position = pos;
     }
 
+    public void OnTriggerExit2D(Collider2D other)
+    {;
+        if(other.gameObject.CompareTag("Base")) baseTooltip.SetActive(false);
+    }
     public void OnTriggerStay2D(Collider2D other)
-    {
-        print("a");
+    {;
         baseTooltip.SetActive(other.gameObject.CompareTag("Base"));
     }
 }
