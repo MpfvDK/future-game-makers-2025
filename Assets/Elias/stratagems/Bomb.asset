@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4ae485ac92058479876223d55247a2, type: 3}
   m_Name: Bomb
   m_EditorClassIdentifier: 
+  gemIcon: {fileID: -2338078004503924486, guid: 56ab1615d7929644ebc9c7e08f600ed7, type: 3}
   gemName: Little Bomb
   castCode: 01001
