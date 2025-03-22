@@ -3,17 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class stratagems : MonoBehaviour
 {
     public List<StratagemSO> stratagemList = new List<StratagemSO>();
+
+    public GameObject stratagemUIPrefab;
+    public Transform contentParent;
     
     public TextMeshProUGUI castingText;
     public KeyCode activationKey = KeyCode.LeftControl;
     public KeyCode strataKey1 = KeyCode.Mouse0;
     public KeyCode strataKey2 = KeyCode.Mouse1;
     public bool entering = false; 
-    public string currentCode = ""; 
+    public string currentCode = "";
+
+    public List<String> applicableCodes = new List<string>();
     
     void Update()
     {
@@ -21,6 +27,12 @@ public class stratagems : MonoBehaviour
         {
             entering = false;
             currentCode = "";
+            applicableCodes = new List<string>();
+            for (int i = 0; i < contentParent.childCount; i = 1)
+            {
+                if (contentParent.childCount == 0) break;
+                Destroy(contentParent.GetChild(0).gameObject);
+            }
             castingText.color = new Color(1, 1, 1, 0);
         }
         
@@ -33,6 +45,12 @@ public class stratagems : MonoBehaviour
         {
             entering = false;
             currentCode = "";
+            applicableCodes = new List<string>();
+            for (int i = 0; i <= contentParent.childCount; i++)
+            {
+                if (contentParent.childCount == 0) break;
+                Destroy(contentParent.GetChild(0).gameObject);
+            }
             castingText.color = new Color(1, 1, 1, 0);
         }
         if(entering){
@@ -44,9 +62,26 @@ public class stratagems : MonoBehaviour
             {
                 currentCode = currentCode + "1";
             }
+            
+            applicableCodes = new List<string>();
+            for (int i = 0; i <= contentParent.childCount; i++)
+            {
+                if (contentParent.childCount == 0) break;
+                Destroy(contentParent.GetChild(0).gameObject);
+            }
+            foreach (StratagemSO sg in stratagemList)
+            {
+                if (!sg.castCode.StartsWith(currentCode)) continue;
+                applicableCodes.Add(sg.name);
+                GameObject uiobj = Instantiate(stratagemUIPrefab, contentParent, false) as GameObject;
+                uiobj.GetComponentInChildren<Image>().sprite = sg.gemIcon;
+                uiobj.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = sg.gemName;
+                uiobj.transform.Find("Code").GetComponent<TextMeshProUGUI>().text = sg.castCode;
+            }
         }
 
         castingText.text = "Currently casting\n   |     " + currentCode;
+        
     }
 
     private bool CheckIfCasted()
